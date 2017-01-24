@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, StatusBar, TextInput, ScrollView } from 'react-native';
+import { Text, View, StatusBar, TextInput, ScrollView, ListView } from 'react-native';
 import TodoItem from './TodoItem.js';
 import { addTodo } from '../actions';
 
@@ -12,27 +12,39 @@ class Main extends Component {
     };
   }
 
+
+  componentWillMount() {
+      this.createDataSource(this.props.todos);
+ }
+
+
+  componentWillReceiveProps(nextProps) {
+      this.createDataSource(nextProps.todos);
+  }
+
+  createDataSource(todos) {
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+
+    this.dataSource = ds.cloneWithRows(todos);
+  }
+
   addNewTodo() {
     const { newTodoText } = this.state;
     if (newTodoText && newTodoText !== '') {
       this.setState({
         newTodoText: ''
       });
-      console.log(this.state);
       this.props.addTodo(newTodoText);
     }
   }
 
+  renderRow(todo) {
+   return <TodoItem todo={todo} />;
+ }
 
-  render() {
-    const renderTodos = () => {
-      return this.props.todos.map((todo) => {
-        return (
-          <TodoItem text={todo.text} key={todo.id} id={todo.id} />
-        );
-      });
-    };
-
+render() {
     const { container, topBar, title, inputContainer, input } = styles;
     return (
       <View style={container}>
@@ -59,7 +71,12 @@ class Main extends Component {
         <ScrollView
           automaticallyAdjustContentInsets={false}
         >
-          {renderTodos()}
+        <ListView
+          enableEmptySections
+          dataSource={this.dataSource}
+          renderRow={this.renderRow}
+        />
+
         </ScrollView>
       </View>
     );
@@ -101,9 +118,9 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  console.log(state.todos.newTodos);
   return {
-    todos: state.todos
+    todos: state.todos.newTodos
   };
 };
 

@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { deleteTodo } from '../actions';
+
 
 class TodoItem extends Component {
+  deleteSelf() {
+    this.props.deleteTodo(this.props.todo.id);
+  }
+
+
     render() {
+      const { text, id } = this.props.todo;
       return (
-        <View style={styles.todoContainer}>
-          <Text style={styles.todoText}>
-            {this.props.text}
-          </Text>
-        </View>
+        <TouchableOpacity onPress={this.deleteSelf.bind(this)}>
+          <View style={styles.todoContainer}>
+            <Text style={styles.todoText}>
+              {text} - {id}
+            </Text>
+          </View>
+        </TouchableOpacity>
       );
     }
 }
@@ -25,4 +36,5 @@ const styles = {
     alignItems: 'center'
   }
 };
-export default TodoItem;
+
+export default connect(null, { deleteTodo })(TodoItem);
