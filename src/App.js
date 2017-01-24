@@ -15,8 +15,10 @@ import Main from './components/Main';
       const store = createStore(
         reducers,
         {},
-        compose(autoRehydrate),
-        applyMiddleware(ReduxThunk)
+        compose(
+          autoRehydrate(),
+          applyMiddleware(ReduxThunk)
+        ),
     );
     persistStore(store, { storage: AsyncStorage });
       return (
