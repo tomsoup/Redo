@@ -20,7 +20,9 @@ import Main from './components/Main';
           applyMiddleware(ReduxThunk)
         ),
     );
-    persistStore(store, { storage: AsyncStorage });
+    persistStore(store, { storage: AsyncStorage }, () => { console.log("Hiya"); });
+
+
       return (
         <Provider store={store}>
             <Main />
