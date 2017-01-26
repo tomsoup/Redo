@@ -46,7 +46,7 @@ class TodoList extends Component {
  }
 
  renderRow(todo) {
-  return <TodoItem todo={todo} />;
+  return <TodoItem todo={todo} key={todo.id} />;
 }
 
 

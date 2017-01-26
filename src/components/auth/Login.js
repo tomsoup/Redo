@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { reduxForm } from 'redux-form';
-import { signIn } from '../../actions';
+import { signIn, addAlert } from '../../actions';
 
 const FORM_FIELDS = {
     email: {
@@ -21,14 +21,13 @@ class Login extends Component {
   onSignIn() {
     const { email, password } = this.props.fields;
 
-    this.props.dispatch(signIn('faker id'));
-      console.log(email.value, password.value);
+    this.props.dispatch(addAlert('faker id'));
   }
 
   renderField(fieldConfig, field) {
       const fieldHelper = this.props.fields[field];
       return (
-        <View>
+        <View key={field}>
           <View style={styles.textField}>
             <TextInput
               key={field}
@@ -75,7 +74,7 @@ class Login extends Component {
             onPress={this.onSignIn.bind(this)}
           >
             <Text style={button}>
-              Sign Ip
+              Sign Up
             </Text>
           </TouchableOpacity>
         </View>
@@ -84,23 +83,21 @@ class Login extends Component {
   }
 }
 
-// https://coolors.co/ff6b35-f7c59f-efefd0-004e89-1a659e
-
-// https://coolors.co/a80874-b7fdfe-5ef38c-2b9720-343a1a
+// https://coolors.co/f9bb3e-295793-e8e8e8-39393a-ffffff
 
 const styles = {
   container: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    backgroundColor: '#efefd0',
+    backgroundColor: '#39393A',
     paddingTop: 20,
   },
   titleContainer: {
     padding: 10
   },
   title: {
-    color: '#343a1a',
+    color: '#e8e8e8',
     fontSize: 22,
   },
   textField: {
@@ -109,7 +106,7 @@ const styles = {
     paddingLeft: 8,
     margin: 7,
     marginTop: 0,
-    backgroundColor: 'white'
+    backgroundColor: '#ffffff'
   },
   input: {
     height: 26
@@ -122,7 +119,7 @@ const styles = {
   },
   button: {
     fontSize: 18,
-    color: '#343a1a'
+    color: '#e8e8e8'
   },
   formError: {
     color: 'red',

@@ -5,14 +5,14 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-    alert: []
+    alerts: []
 };
 export default (state = INITIAL_STATE, action) => {
     // we can never return empty state
     switch (action.type) {
         case ADD_ALERT:
         return {
-          alert: [...state.alert, {
+          alerts: [...state.alerts, {
               text: action.payload,
               id: uuid.v4()
             }
@@ -20,7 +20,7 @@ export default (state = INITIAL_STATE, action) => {
         };
         case REMOVE_ALERT:
           return {
-              alert: [...state.alert.filter((alert) => {
+              alerts: [...state.alerts.filter((alert) => {
                 if (alert.id !== action.payload) {
                   return false;
                 }
