@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { reduxForm } from 'redux-form';
-import { signIn, addAlert } from '../../actions';
+import { loginUser, signupUser, addAlert } from '../../actions';
 
 const FORM_FIELDS = {
     email: {
@@ -19,9 +19,13 @@ const FORM_FIELDS = {
 class Login extends Component {
 
   onSignIn() {
-    const { email, password } = this.props.fields;
+    const { dispatch, fields: { email, password } } = this.props;
+    dispatch(loginUser(email.value, password.value));
+  }
 
-    this.props.dispatch(addAlert('faker id'));
+  onSignUp() {
+    const { dispatch, fields: { email, password } } = this.props;
+    dispatch(signupUser(email.value, password.value));
   }
 
   renderField(fieldConfig, field) {
@@ -71,7 +75,7 @@ class Login extends Component {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={this.onSignIn.bind(this)}
+            onPress={this.onSignUp.bind(this)}
           >
             <Text style={button}>
               Sign Up

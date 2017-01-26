@@ -1,24 +1,41 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { View, ListView } from 'react-native';
 import Alert from './Alert';
 
 class AlertContainer extends Component {
 
+  componentWillMount() {
+      this.createDataSource(this.props.alerts);
+ }
 
-  renderAlerts() {
-    return this.props.alerts.map((alert) => {
-      return (
-        <Alert alert={alert} key={alert.id} />
-      );
-    });
+
+  componentWillReceiveProps(nextProps) {
+      this.createDataSource(nextProps.alerts);
   }
+
+
+  createDataSource(alerts) {
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+
+    this.dataSource = ds.cloneWithRows(alerts);
+  }
+
+  renderRow(alert) {
+   return <Alert alert={alert} key={alert.id} />;
+ }
 
   render() {
     return (
 
       <View style={styles.container}>
-        {this.renderAlerts()}
+        <ListView
+          enableEmptySections
+          dataSource={this.dataSource}
+          renderRow={this.renderRow}
+        />
       </View>
     );
   }
@@ -35,7 +52,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  console.log(state.alerts.alerts);
   return {
     alerts: state.alerts.alerts
   };

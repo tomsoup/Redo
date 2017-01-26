@@ -7,6 +7,7 @@ class Alert extends Component {
 
   onRemoveAlert() {
     const { dispatch, alert } = this.props;
+    console.log(alert);
     dispatch(removeAlert(alert.id));
   }
 
@@ -16,7 +17,7 @@ class Alert extends Component {
       <TouchableWithoutFeedback onPress={this.onRemoveAlert.bind(this)}>
         <View style={container}>
           <Text style={text}>
-            {this.props.alert.id}
+            {this.props.alert.text}
           </Text>
         </View>
       </TouchableWithoutFeedback>
@@ -29,13 +30,13 @@ const styles = {
     flex: 1,
     flexDirection: 'row',
     padding: 16,
-    backgroundColor: '#FFF275',
-    borderColor: '#F9BB3E',
+    backgroundColor: '#295793',
+    borderColor: '#f6f6f6',
     // 5ef38c
     borderTopWidth: 2
   },
   text: {
-    color: '#FF3C38'
+    color: '#f6f6f6'
   }
 };
 

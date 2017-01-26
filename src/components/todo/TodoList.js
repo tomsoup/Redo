@@ -131,7 +131,6 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state.todos.newTodos);
   return {
     todos: state.todos.newTodos
   };

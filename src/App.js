@@ -9,21 +9,16 @@ import reducers from './reducers';
 import Main from './Main';
 
   class App extends Component {
-
     render() {
       const store = createStore(
         reducers,
         {},
         compose(
-          // autoRehydrate(),
-          // applyMiddleware(ReduxThunk)
-        ),
+          applyMiddleware(ReduxThunk),
+          autoRehydrate()
+      )
     );
-    // persistStore(store, { storage: AsyncStorage }, () => {
-    //
-    //  });
-
-
+      persistStore(store, { storage: AsyncStorage });
       return (
         <Provider store={store}>
           <Main />

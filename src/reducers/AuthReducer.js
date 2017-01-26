@@ -1,6 +1,6 @@
 import {
-    SIGN_IN,
-    SIGN_OUT
+    AUTHUSER,
+    UNAUTHUSER
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -9,11 +9,11 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     // we can never return empty state
     switch (action.type) {
-        case SIGN_IN:
+        case AUTHUSER:
           return {
             userid: action.payload
           };
-        case SIGN_OUT:
+        case UNAUTHUSER:
           return {
               INITIAL_STATE
           };
