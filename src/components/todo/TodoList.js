@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Text, View, StatusBar, TextInput, ScrollView, ListView } from 'react-native';
+import {
+  Text, View, StatusBar, TextInput, ScrollView, ListView, TouchableOpacity
+} from 'react-native';
 import TodoItem from './TodoItem.js';
-import { addTodo } from '../actions';
+import { addTodo, signOut } from '../../actions';
 
-class Main extends Component {
+class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       newTodoText: ''
     };
   }
-
 
   componentWillMount() {
       this.createDataSource(this.props.todos);
@@ -22,27 +23,32 @@ class Main extends Component {
       this.createDataSource(nextProps.todos);
   }
 
-  createDataSource(todos) {
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-
-    this.dataSource = ds.cloneWithRows(todos);
-  }
-
-  addNewTodo() {
-    const { newTodoText } = this.state;
-    if (newTodoText && newTodoText !== '') {
-      this.setState({
-        newTodoText: ''
-      });
-      this.props.addTodo(newTodoText);
-    }
-  }
-
-  renderRow(todo) {
-   return <TodoItem todo={todo} />;
+ addNewTodo() {
+   const { newTodoText } = this.state;
+   if (newTodoText && newTodoText !== '') {
+     this.setState({
+       newTodoText: ''
+     });
+     this.props.addTodo(newTodoText);
+   }
  }
+
+ onSignOut() {
+   this.props.signOut();
+ }
+
+ createDataSource(todos) {
+   const ds = new ListView.DataSource({
+     rowHasChanged: (r1, r2) => r1 !== r2
+   });
+
+   this.dataSource = ds.cloneWithRows(todos);
+ }
+
+ renderRow(todo) {
+  return <TodoItem todo={todo} />;
+}
+
 
 render() {
     const { container, topBar, title, inputContainer, input } = styles;
@@ -67,6 +73,13 @@ render() {
             value={this.state.newTodoText}
             onSubmitEditing={this.addNewTodo.bind(this)}
           />
+        <TouchableOpacity
+          onPress={this.onSignOut.bind(this)}
+        >
+          <Text>
+            Log Out
+          </Text>
+        </TouchableOpacity>
         </View>
         <ScrollView
           automaticallyAdjustContentInsets={false}
@@ -124,4 +137,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, { addTodo })(Main);
+export default connect(mapStateToProps, { addTodo, signOut })(TodoList);

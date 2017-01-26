@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { deleteTodo } from '../actions';
+import { deleteTodo } from '../../actions';
 
 
 class TodoItem extends Component {

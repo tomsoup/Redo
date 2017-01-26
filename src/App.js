@@ -6,8 +6,7 @@ import { AsyncStorage } from 'react-native';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import ReduxThunk from 'redux-thunk';
 import reducers from './reducers';
-import Main from './components/Main';
-
+import Main from './Main';
 
   class App extends Component {
 
@@ -16,16 +15,18 @@ import Main from './components/Main';
         reducers,
         {},
         compose(
-          autoRehydrate(),
-          applyMiddleware(ReduxThunk)
+          // autoRehydrate(),
+          // applyMiddleware(ReduxThunk)
         ),
     );
-    persistStore(store, { storage: AsyncStorage }, () => { console.log("Hiya"); });
+    // persistStore(store, { storage: AsyncStorage }, () => {
+    //
+    //  });
 
 
       return (
         <Provider store={store}>
-            <Main />
+          <Main />
         </Provider>
       );
     }
