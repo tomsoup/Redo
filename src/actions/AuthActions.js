@@ -1,5 +1,6 @@
 import * as Keychain from 'react-native-keychain';
 import axios from 'axios';
+import { Actions } from 'react-native-router-flux';
 import {
   UNAUTHUSER,
   AUTHUSER
@@ -8,7 +9,6 @@ import { SIGNUP_URL, SIGNIN_URL } from '../api';
 import { addAlert } from './AlertActions';
 
 export const loginUser = (email, password) => {
-  console.log(email, password);
   return (dispatch) => {
     // axios.post is a function that takes time to complete.
     // we call .then on the return value
@@ -18,11 +18,11 @@ export const loginUser = (email, password) => {
     return axios.post(SIGNIN_URL, { email, password }).then((response) => {
       // from backend
       const { user_id, token } = response.data;
-        console.log(user_id, token);
       Keychain.setGenericPassword(user_id, token)
         .then(() => {
           dispatch(addAlert(token));
           dispatch(authUser(user_id));
+          Actions.list();
         });
       //.catch takes a function to be executed when exception/errors during an request
       // error handling callback
@@ -43,6 +43,7 @@ export const signupUser = (email, password) => {
         .then(() => {
           dispatch(addAlert(token));
           dispatch(authUser(user_id));
+          Actions.list();
         });
     }).catch((error) => {
       dispatch(addAlert('Could not Sign Up.'));
@@ -58,8 +59,10 @@ const authUser = (userId) => {
 };
 
 export const signOut = (userId) => {
-  return {
+  return (dispatch) => {
+    dispatch({
     type: UNAUTHUSER,
-    payload: userId
+    payload: userId });
+    Actions.auth();
   };
 };

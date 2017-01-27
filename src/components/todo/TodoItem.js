@@ -16,7 +16,7 @@ class TodoItem extends Component {
         <TouchableOpacity onPress={this.deleteSelf.bind(this)}>
           <View style={styles.todoContainer}>
             <Text style={styles.todoText}>
-              {text} - {id}
+              {text}
             </Text>
           </View>
         </TouchableOpacity>

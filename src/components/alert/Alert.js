@@ -7,7 +7,6 @@ class Alert extends Component {
 
   onRemoveAlert() {
     const { dispatch, alert } = this.props;
-    console.log(alert);
     dispatch(removeAlert(alert.id));
   }
 

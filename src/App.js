@@ -6,11 +6,12 @@ import { AsyncStorage } from 'react-native';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import ReduxThunk from 'redux-thunk';
 import reducers from './reducers';
-import Main from './Main';
+import Router from './Router';
+import AlertContainer from './components/alert/AlertContainer';
 
   class App extends Component {
     render() {
-      const store = createStore(
+      let store = createStore(
         reducers,
         {},
         compose(
@@ -21,7 +22,7 @@ import Main from './Main';
       persistStore(store, { storage: AsyncStorage });
       return (
         <Provider store={store}>
-          <Main />
+          <Router />
         </Provider>
       );
     }

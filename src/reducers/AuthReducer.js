@@ -14,9 +14,7 @@ export default (state = INITIAL_STATE, action) => {
             userid: action.payload
           };
         case UNAUTHUSER:
-          return {
-              INITIAL_STATE
-          };
+            return INITIAL_STATE;
         default:
             return state;
     }

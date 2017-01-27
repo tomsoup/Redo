@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Octicons';
 import {
-  Text, View, StatusBar, TextInput, ScrollView, ListView, TouchableOpacity
+  Text, View, TextInput, ScrollView, ListView, TouchableOpacity, RefreshControl
 } from 'react-native';
 import TodoItem from './TodoItem.js';
 import { addTodo, signOut } from '../../actions';
+import AlertContainer from '../alert/AlertContainer';
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newTodoText: ''
+      newTodoText: '',
+      refreshing: false
     };
   }
 
@@ -51,14 +54,26 @@ class TodoList extends Component {
 
 
 render() {
-    const { container, topBar, title, inputContainer, input } = styles;
+    const { container, topBar, title, inputContainer, input, scrollViewContainer } = styles;
     return (
       <View style={container}>
+
         <View style={topBar}>
-          <StatusBar barStyle="light-content" />
-        <Text style={title}>
-          To-Do List
-        </Text>
+          <TouchableOpacity
+            onPress={this.onSignOut.bind(this)}
+          >
+            <Icon name="x" size={20} color="white" />
+          </TouchableOpacity>
+
+          <Text style={title}>
+            To-Do List
+          </Text>
+          <TouchableOpacity
+            onPress={this.addNewTodo.bind(this)}
+          >
+            <Icon name="plus" size={20} color="white" />
+          </TouchableOpacity>
+
         </View>
         <View style={inputContainer}>
           <TextInput
@@ -73,16 +88,17 @@ render() {
             value={this.state.newTodoText}
             onSubmitEditing={this.addNewTodo.bind(this)}
           />
-        <TouchableOpacity
-          onPress={this.onSignOut.bind(this)}
-        >
-          <Text>
-            Log Out
-          </Text>
-        </TouchableOpacity>
+
         </View>
         <ScrollView
+          refreshControl={
+            <RefreshControl
+              onRefresh={this.onRefresh}
+              refreshing={this.state.refreshing}
+            />
+          }
           automaticallyAdjustContentInsets={false}
+          contentContainerStyle={scrollViewContainer}
         >
         <ListView
           enableEmptySections
@@ -91,6 +107,9 @@ render() {
         />
 
         </ScrollView>
+        <View style={{ flex: 1 }}>
+          <AlertContainer />
+        </View>
       </View>
     );
   }
@@ -107,7 +126,7 @@ const styles = {
     paddingTop: 28,
     paddingBottom: 8,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#2ecc71'
   },
@@ -127,6 +146,9 @@ const styles = {
     borderRadius: 8,
     backgroundColor: 'white'
   },
+  scrollViewContainer: {
+
+  }
 
 };
 

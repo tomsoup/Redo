@@ -12,7 +12,6 @@ export const addAlert = (text) => {
 };
 
 export const removeAlert = (id) => {
-  console.log(id);
   return {
     type: REMOVE_ALERT,
     payload: id

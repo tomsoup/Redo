@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
+import { Actions } from 'react-native-router-flux';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { reduxForm } from 'redux-form';
-import { loginUser, signupUser, addAlert } from '../../actions';
+import { loginUser, signupUser } from '../../actions';
+import AlertContainer from '../alert/AlertContainer';
 
 const FORM_FIELDS = {
     email: {
@@ -17,16 +19,55 @@ const FORM_FIELDS = {
 
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    };
+  }
+
+  componentWillMount() {
+    console.log(this.props.user_id);
+    if (this.props.user_id) {
+      return (
+        Actions.list()
+      );
+    }
+  }
+
 
   onSignIn() {
     const { dispatch, fields: { email, password } } = this.props;
-    dispatch(loginUser(email.value, password.value));
+    this.setState({
+      loading: true
+    });
+    dispatch(loginUser(email.value, password.value)).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   }
 
   onSignUp() {
     const { dispatch, fields: { email, password } } = this.props;
-    dispatch(signupUser(email.value, password.value));
+    this.setState({
+      loading: true
+    });
+    dispatch(signupUser(email.value, password.value)).then(() => {
+      this.setState({
+        loading: false
+      });
+    });
   }
+
+  componentWillUpdate(nextProps) {
+    console.log(nextProps.user_id);
+      if (nextProps.user_id) {
+        return (
+          Actions.list()
+        );
+      }
+    }
 
   renderField(fieldConfig, field) {
       const fieldHelper = this.props.fields[field];
@@ -56,13 +97,15 @@ class Login extends Component {
 
   render() {
     const { container, titleContainer, title, buttonContainer, button } = styles;
+    if (this.state.loading) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text> Loading... </Text>
+        </View>
+      );
+    }
     return (
       <View style={container}>
-        <View style={titleContainer}>
-          <Text style={title}>
-            Hello World!
-          </Text>
-        </View>
         { _.map(FORM_FIELDS,
           this.renderField.bind(this))
         }
@@ -82,7 +125,11 @@ class Login extends Component {
             </Text>
           </TouchableOpacity>
         </View>
+        <View style={{ flex: 1 }}>
+          <AlertContainer />
+        </View>
       </View>
+
     );
   }
 }
@@ -143,8 +190,15 @@ const validate = (values) => {
   return errors;
 };
 
+const mapStateToProps = (state) => {
+  console.log(state.auth.userid);
+  return {
+    user_id: state.auth.userid
+  };
+};
+
 export default reduxForm({
   form: 'login',
   fields: _.keys(FORM_FIELDS),
   validate,
-}, null, null)(Login);
+}, mapStateToProps, null)(Login);

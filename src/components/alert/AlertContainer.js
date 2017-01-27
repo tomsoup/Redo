@@ -52,7 +52,6 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state.alerts.alerts);
   return {
     alerts: state.alerts.alerts
   };
