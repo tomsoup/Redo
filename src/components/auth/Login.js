@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, AsyncStorage } from 'react-native';
 import { reduxForm } from 'redux-form';
 import { loginUser, signupUser } from '../../actions';
 import AlertContainer from '../alert/AlertContainer';
@@ -27,6 +27,7 @@ class Login extends Component {
   }
 
   componentWillMount() {
+    // AsyncStorage.clear();
     console.log(this.props.user_id);
     if (this.props.user_id) {
       return (

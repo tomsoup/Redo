@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Octicons';
+import { Actions } from 'react-native-router-flux';
 import {
-  Text, View, TextInput, ScrollView, ListView, TouchableOpacity, RefreshControl
+  Text, View, ScrollView, ListView, TouchableOpacity, RefreshControl
 } from 'react-native';
 import TodoItem from './TodoItem.js';
 import { addTodo, signOut } from '../../actions';
@@ -12,13 +13,12 @@ class TodoList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newTodoText: '',
       refreshing: false
     };
   }
 
   componentWillMount() {
-      this.createDataSource(this.props.todos);
+    this.createDataSource(this.props.todos);
  }
 
 
@@ -26,18 +26,12 @@ class TodoList extends Component {
       this.createDataSource(nextProps.todos);
   }
 
- addNewTodo() {
-   const { newTodoText } = this.state;
-   if (newTodoText && newTodoText !== '') {
-     this.setState({
-       newTodoText: ''
-     });
-     this.props.addTodo(newTodoText);
-   }
- }
-
  onSignOut() {
    this.props.signOut();
+ }
+
+ routeAddTodo() {
+   Actions.newTodo();
  }
 
  createDataSource(todos) {
@@ -54,7 +48,7 @@ class TodoList extends Component {
 
 
 render() {
-    const { container, topBar, title, inputContainer, input, scrollViewContainer } = styles;
+    const { container, topBar, title, scrollViewContainer } = styles;
     return (
       <View style={container}>
 
@@ -69,25 +63,10 @@ render() {
             To-Do List
           </Text>
           <TouchableOpacity
-            onPress={this.addNewTodo.bind(this)}
+            onPress={this.routeAddTodo.bind(this)}
           >
             <Icon name="plus" size={20} color="white" />
           </TouchableOpacity>
-
-        </View>
-        <View style={inputContainer}>
-          <TextInput
-            style={input}
-            onChange={(event) => {
-              this.setState({
-                newTodoText: event.nativeEvent.text
-              });
-            }}
-            returnKeyType="done"
-            placeholder='New To Do'
-            value={this.state.newTodoText}
-            onSubmitEditing={this.addNewTodo.bind(this)}
-          />
 
         </View>
         <ScrollView
@@ -134,21 +113,6 @@ const styles = {
     color: 'white',
     fontSize: 20
   },
-  inputContainer: {
-    padding: 8,
-    paddingTop: 0,
-    backgroundColor: '#2ecc71'
-  },
-  input: {
-    height: 26,
-    padding: 4,
-    paddingLeft: 8,
-    borderRadius: 8,
-    backgroundColor: 'white'
-  },
-  scrollViewContainer: {
-
-  }
 
 };
 

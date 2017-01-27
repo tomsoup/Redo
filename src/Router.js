@@ -2,6 +2,7 @@ import React from 'react';
 import { Scene, Router } from 'react-native-router-flux';
 import Login from './components/auth/Login';
 import TodoList from './components/todo/TodoList';
+import NewTodo from './components/todo/NewTodo';
 
 const RouterComponent = () => {
   return (
@@ -14,6 +15,11 @@ const RouterComponent = () => {
           key="todoList"
           component={TodoList}
           title="Todo List"
+        />
+        <Scene
+          key="newTodo"
+          component={NewTodo}
+          title="New To Do"
         />
       </Scene>
     </Router>
